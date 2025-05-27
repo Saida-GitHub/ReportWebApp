@@ -29,12 +29,46 @@ namespace ReportWebApp.Pages
 
         public async Task LoadClientsAsync()
         {
-           // Clients = await _clientService.GetClientsAsync();
+            // Clients = await _clientService.GetClientsAsync();
+
+            Clients = new List<Client>
+            {
+                 new Client
+                 {
+                    Id = "101",
+                    Name = "TCS",
+                 },
+                   new Client
+                 {
+                    Id = "102",
+                    Name = "TechM",
+                 },
+                      new Client
+                 {
+                    Id = "103",
+                    Name = "Infosys",
+                 },
+
+            };
         }
 
         public async Task GenerateReport()
         {
-
+            ReportResults = new List<ReportItem>
+            {
+                new ReportItem
+                {
+                     DateSent = DateTime.Now,
+                      Message =" Process Completed",
+                       Status = "Success"
+                },
+                new ReportItem
+                {
+                     DateSent = DateTime.Now.AddDays(1),
+                      Message =" Verification Pending",
+                       Status = "Hold"
+                }
+            };
         }
         //{
         //    ReportResults = new List<ReportItem>();
