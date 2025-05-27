@@ -1,0 +1,72 @@
+﻿@page "/"
+
+ <PageTitle>Index</PageTitle>
+
+<div class="container">
+    <div class="form-card">
+        <h2>📊 Generate Report</h2>
+
+        <EditForm Model="@InputModel" OnValidSubmit="GenerateReport">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="client">Client</label>
+                <InputSelect id="client" @bind-Value="InputModel.ClientId" class="form-control">
+                    <option value="">-- Select Client --</option>
+                    @foreach (var client in Clients)
+                    {
+                        <option value="@client.Id">@client.Name</option>
+                    }
+                </InputSelect>
+            </div>
+
+            <div class="form-group">
+                <label>Date Range</label>
+                <div class="date-range">
+                    <InputDate @bind-Value="InputModel.FromDate" class="form-control" />
+                    <span class="date-separator">to</span>
+                    <InputDate @bind-Value="InputModel.ToDate" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="reportType">Report Type</label>
+                <InputSelect id="reportType" @bind-Value="InputModel.ReportType" class="form-control">
+                    <option value="">-- Select Report Type --</option>
+                    <option value="SMS">SMS</option>
+                    <option value="Email">Email</option>
+                    <option value="Dialer">Dialer</option>
+                </InputSelect>
+            </div>
+
+            <button type="submit" class="submit-button">Generate</button>
+        </EditForm>
+    </div>
+
+    @if (ReportResults?.Any() == true)
+    {
+        <div class="table-card">
+            <h3>📋 Report Results</h3>
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ReportResults)
+                    {
+                        <tr>
+                            <td>@item.DateSent.ToShortDateString()</td>
+                            <td>@item.Message</td>
+                            <td>@item.Status</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
