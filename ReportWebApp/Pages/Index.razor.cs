@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.JSInterop;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using ReportWebApp.Data.Model;
 using ReportWebApp.Services;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using static System.Net.WebRequestMethods;
@@ -70,6 +72,60 @@ namespace ReportWebApp.Pages
                 }
             };
         }
+        public async Task ExportToExcel()
+        {
+            await JS.InvokeVoidAsync("exportTableToExcel", "reportTable", "ReportExport.xls");
+        }
+
+        //public IActionResult ExportToExcel()
+        //{
+        //    // ✅ EPPlus 8+ license context setup
+        //    OfficeOpenXml.ExcelPackage.License = new OfficeOpenXml.LicenseContext
+        //    {
+        //        Licensee = "PersonalUseOnly",
+        //        LicenseType = OfficeOpenXml.eLicenseType.NonCommercial
+        //    };
+
+        //    var reportData = ReportResults; // Replace with your actual data
+
+        //    using (var package = new ExcelPackage())
+        //    {
+        //        var worksheet = package.Workbook.Worksheets.Add("Report");
+
+        //        // Headers
+        //        worksheet.Cells[1, 1].Value = "Date";
+        //        worksheet.Cells[1, 2].Value = "Message";
+        //        worksheet.Cells[1, 3].Value = "Status";
+
+        //        using (var range = worksheet.Cells[1, 1, 1, 3])
+        //        {
+        //            range.Style.Font.Bold = true;
+        //            range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+        //            range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+        //        }
+
+        //        // Data
+        //        for (int i = 0; i < reportData.Count; i++)
+        //        {
+        //            worksheet.Cells[i + 2, 1].Value = reportData[i].DateSent.ToShortDateString();
+        //            worksheet.Cells[i + 2, 2].Value = reportData[i].Message;
+        //            worksheet.Cells[i + 2, 3].Value = reportData[i].Status;
+        //        }
+
+        //        worksheet.Cells.AutoFitColumns();
+
+        //        // Export to byte array
+        //        var fileBytes = package.GetAsByteArray();
+        //        var fileName = $"Report_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+
+        //        // Return FileResult manually
+        //        return new FileContentResult(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        //        {
+        //            FileDownloadName = fileName
+        //        };
+        //    }
+        //}
+
         //{
         //    ReportResults = new List<ReportItem>();
         //    var connectionString = "YourConnectionStringHere";

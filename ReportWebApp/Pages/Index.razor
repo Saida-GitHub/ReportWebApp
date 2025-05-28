@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+@inject IJSRuntime JS
  <PageTitle>Index</PageTitle>
 
 <div class="container">
@@ -48,6 +48,8 @@
     {
         <div class="table-card">
             <h3>📋 Report Results</h3>
+
+            <button @onclick="ExportToExcel">Export to Excel</button>
             <table id="reportTable" class="report-table">
                 <thead>
                     <tr>
@@ -124,8 +126,8 @@
                         }
                     }
                 }
+
             </script>
-        
-        </div>
+       </div>
     }
 </div>
