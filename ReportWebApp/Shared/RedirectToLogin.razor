@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject NavigationManager Navigation
+@inject ProtectedSessionStorage SessionStorage
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var loginStatus = await SessionStorage.GetAsync<bool>("IsLoggedIn");
+        if (loginStatus.Success && loginStatus.Value)
+        {
+            // User is logged in, do nothing
+        }
+        else
+        {
+            Navigation.NavigateTo("/login", true);
+        }
+    }
+}

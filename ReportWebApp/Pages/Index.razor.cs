@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.JSInterop;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -11,12 +12,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using static System.Net.WebRequestMethods;
 
+
 namespace ReportWebApp.Pages
 {
     public partial class Index : ComponentBase
     {
         [Inject]
+        protected NavigationManager Navigation { get; set; }
+
+        [Inject]
         public ClientService _clientService { get; set; }
+
+        [Inject]
+        public LoginService LoginService { get; set; }
 
         public List<Client> Clients { get; set; } = new();
         public List<ReportItem> ReportResults { get; set; }
@@ -25,10 +33,16 @@ namespace ReportWebApp.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            if (!LoginService.IsLoggedIn)
+            {
+                Navigation.NavigateTo("/login", true);
+            }
+
             // Load clients from DB
             await LoadClientsAsync();
         }
 
+        
         public async Task LoadClientsAsync()
         {
             // Clients = await _clientService.GetClientsAsync();
